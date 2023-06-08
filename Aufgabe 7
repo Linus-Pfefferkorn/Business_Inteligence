@@ -1,0 +1,65 @@
+--Aufgabe 7.1
+select Umsatzbetrag, Mon_ID, Mitarbeiter_ID, Produkt_ID, Bundesland 
+from Umsatzdaten join Geografie on Umsatzdaten.Land_ID = Geografie.Land_ID
+where Bundesland = 'Sachsen' or Bundesland = 'Thüringen'
+Group By Umsatzbetrag, Mon_ID, Mitarbeiter_ID, Produkt_ID, Bundesland
+
+
+--Aufgabe 7.2
+select sum(Umsatzbetrag) AS Summe_Umsatzbetrag, sum(Umsatzmenge) AS Summe_Umsatzmenge, Bundesland
+from Umsatzdaten join Geografie on Umsatzdaten.Land_ID = Geografie.Land_ID
+where Bundesland = 'Sachsen' or Bundesland = 'Thüringen'
+group by Bundesland
+
+--Aufgabe 7.3
+
+select sum(Umsatzbetrag) AS Summe_Umsatzbetrag, sum(Umsatzmenge) AS Summe_Umsatzmenge, Bundesland, Quartal
+from Umsatzdaten join Geografie on Umsatzdaten.Land_ID = Geografie.Land_ID, Zeit
+where Bundesland = 'Sachsen' or Bundesland = 'Thüringen'
+group by Bundesland, Quartal
+order by Bundesland
+
+--Aufgabe 7.4
+select sum(Umsatzbetrag) as Umsatzbetrag, Subkategorie, Staat
+from Umsatzdaten join Geografie on Umsatzdaten.Land_ID = Geografie.Land_ID join Produkt on Umsatzdaten.Produkt_ID = Produkt.Produkt_ID join Produktsubkategorie on Produkt.Subkategorie_ID = Produktsubkategorie.Subkategorie_ID
+group by Subkategorie, Staat
+
+--Aufgabe 7.5
+select sum(Umsatzbetrag) as Umsatzbetrag, Subkategorie, Staat
+from Umsatzdaten join Geografie on Umsatzdaten.Land_ID = Geografie.Land_ID join Produkt on Umsatzdaten.Produkt_ID = Produkt.Produkt_ID join Produktsubkategorie on Produkt.Subkategorie_ID = Produktsubkategorie.Subkategorie_ID
+group by Subkategorie, Staat
+with cube
+
+--7.6
+select sum(Umsatzbetrag) as Umsatzbetrag, Subkategorie, Staat, Jahr
+from Umsatzdaten 
+join Geografie on Umsatzdaten.Land_ID = Geografie.Land_ID 
+join Produkt on Umsatzdaten.Produkt_ID = Produkt.Produkt_ID 
+join Produktsubkategorie on Produkt.Subkategorie_ID = Produktsubkategorie.Subkategorie_ID, Zeit
+group by Subkategorie, Staat, Jahr
+with cube
+
+--7.7
+Select sum(Umsatzbetrag) as Umsatzbetrag, Staat, Region, Bundesland
+from Umsatzdaten
+join Geografie on Umsatzdaten.Land_ID = Geografie.Land_ID 
+Group by Staat, Region, Bundesland
+with rollup
+
+--7.8
+Select sum(Umsatzbetrag) as Umsatzbetrag, Kategorie, Subkategorie, Produktname
+from Umsatzdaten
+join Produkt on Umsatzdaten.Produkt_ID= Produkt.Produkt_ID
+join Produktsubkategorie on Produkt.Subkategorie_ID = Produktsubkategorie.Subkategorie_ID
+join Produktkategorie on Produktsubkategorie.Kategorie_ID = Produktkategorie.Kategorie_ID
+Group by Kategorie, Subkategorie, Produktname
+with rollup
+
+--7.9
+Select sum(Umsatzbetrag) as Umsatzbetrag, Kategorie, Subkategorie, (Markenname+' '+Produktname) as Markenname
+from Umsatzdaten
+join Produkt on Umsatzdaten.Produkt_ID= Produkt.Produkt_ID
+join Produktsubkategorie on Produkt.Subkategorie_ID = Produktsubkategorie.Subkategorie_ID
+join Produktkategorie on Produktsubkategorie.Kategorie_ID = Produktkategorie.Kategorie_ID
+Group by Kategorie, Subkategorie, Markenname, Produktname
+with rollup
